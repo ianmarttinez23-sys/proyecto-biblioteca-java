@@ -44,6 +44,7 @@ public class Main{
                 buscarLibro();
                 break;
             case 4:
+                prestarLibro();
                 break;
             case 5:
                 devolverLibro();    
@@ -191,6 +192,41 @@ public class Main{
             default:
                 System.out.println("Acción no reconocida");
                 break;
+        }
+    }
+
+    public static void prestarLibro(){
+        System.out.println(cabecera);
+        System.out.println("Escribe el nombre del libro que quieras prestar: ");
+
+        entrada.nextLine();
+        String titulo = entrada.nextLine();
+
+        for(String[] libro:libros){
+            if (!libro[TITULO].equalsIgnoreCase(titulo)) continue;
+            if(libro[ESTADO].equalsIgnoreCase("Prestado")){
+                System.out.println("Este libro no está disponible");
+            }
+            else{
+                System.out.println(cabecera);
+                System.out.println("¿Estás seguro que quieres prestar el siguiente libro?");
+                System.out.println(libro[TITULO] + " de " + libro[AUTOR]);
+                System.out.println("1. Sí");
+                System.out.println("2. No");
+
+                int opcion = entrada.nextInt();
+                switch (opcion) {
+                    case 1:
+                        libro[ESTADO] = "Prestado";
+                        break;
+                    case 2:
+                        break;
+
+                    default:
+                        System.out.println("Acción no reconocida");
+                        break;
+                }
+            }
         }
     }
 
