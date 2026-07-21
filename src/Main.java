@@ -10,7 +10,7 @@ public class Main{
             {"1984", "George Orwell", "Disponible"},
             {"Cien años de soledad", "Gabriel García Márquez", "Disponible"},
             {"El Principito", "Antoine de Saint-Exupéry", "Disponible"},
-            {"La Odisea", "Homero", "Disponible"}
+            {"La Odisea", "Homero", "Prestado"}
         };
     static final int TITULO = 0;
     static final int AUTOR = 1;
@@ -46,6 +46,7 @@ public class Main{
             case 4:
                 break;
             case 5:
+                devolverLibro();    
                 break;
             case 6:
                 break;
@@ -190,6 +191,40 @@ public class Main{
             default:
                 System.out.println("Acción no reconocida");
                 break;
+        }
+    }
+
+    public static void devolverLibro(){
+        System.out.println(cabecera);
+        System.out.println("Escribe el nombre del libro que quieras devolver: ");
+
+        entrada.nextLine();
+        String titulo = entrada.nextLine();
+        for(String[] libro:libros){
+            if (!libro[TITULO].equalsIgnoreCase(titulo)) continue;
+            if(libro[ESTADO].equalsIgnoreCase("Disponible")){
+                System.out.println("Este libro no ha sido prestado");
+            }
+            else{
+                System.out.println(cabecera);
+                System.out.println("¿Estás seguro que quieres devolver el siguiente libro?");
+                System.out.println(libro[TITULO] + " de " + libro[AUTOR]);
+                System.out.println("1. Sí");
+                System.out.println("2. No");
+
+                int opcion = entrada.nextInt();
+                switch (opcion) {
+                    case 1:
+                        libro[ESTADO] = "Disponible";
+                        break;
+                    case 2:
+                        break;
+
+                    default:
+                        System.out.println("Acción no reconocida");
+                        break;
+                }
+            }
         }
     }
 
