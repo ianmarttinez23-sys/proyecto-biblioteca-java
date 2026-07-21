@@ -41,6 +41,7 @@ public class Main{
                 mostrarLibros();
                 break;
             case 3:
+                buscarLibro();
                 break;
             case 4:
                 break;
@@ -107,10 +108,6 @@ public class Main{
         }
 
         libros = libroAñadido;
-        
-        
-        
-        
     }
 
     public static void mostrarLibros(){
@@ -119,6 +116,80 @@ public class Main{
 
         for(String[] libro:libros){
             System.out.println(libro[TITULO]);
+        }
+    }
+
+    public static void buscarLibro(){
+        boolean encontrado = false;
+
+        System.out.println(cabecera);
+        System.out.println("Buscador de libros");
+        System.out.println("1. Buscar por título");
+        System.out.println("2. Buscar por autor");
+        System.out.println("3. Atrás");
+
+        int opcion = entrada.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println(cabecera);
+                System.out.println("Buscar libro por título");
+                System.out.println("Introduzca el título del libro que quiere buscar:");
+                
+                entrada.nextLine();
+                String titulo = entrada.nextLine();
+
+                for(String[] libro:libros){
+                    if(libro[TITULO].equalsIgnoreCase(titulo)){
+                        encontrado = true;
+
+                        System.out.println(cabecera);
+                        System.out.println("Libro encontrado. Detalles de la obra:");
+                        System.out.println("Autor: " + libro[AUTOR]);
+                        System.out.println("Estado: " + libro[ESTADO]);
+                    }
+                }
+
+                if(!encontrado) System.out.println("Libro no enontrado.");
+
+                break;
+
+            case 2:
+                System.out.println(cabecera);
+                System.out.println("Buscar libro por autor");
+                System.out.println("Introduzca el nombre del autor del libro que quiere buscar:");
+
+                entrada.nextLine();
+                String autor = entrada.nextLine();
+
+                // Puede ser peligroso recorrer tres veces la misma lista ya que puede relentizar el programa
+                // pero no encuentro otra manera.
+                for(String[] libro:libros){
+                    if(libro[AUTOR].equalsIgnoreCase(autor)) encontrado = true;
+                }
+                if (encontrado) {
+                    System.out.println(cabecera);
+                    System.out.println("Libros disponibles:");
+                    for(String[] libro:libros){
+                        if(libro[AUTOR].equalsIgnoreCase(autor) && libro[ESTADO].equalsIgnoreCase("Disponible")){
+                            System.out.println(libro[TITULO]);
+                        }
+                    }
+                    System.out.println("\nLibros prestados:");
+                    for(String[] libro:libros){
+                        if(libro[AUTOR].equalsIgnoreCase(autor) && libro[ESTADO].equalsIgnoreCase("Prestado")){
+                            System.out.println(libro[TITULO]);
+                        }
+                    }
+                }
+                else System.out.println("Autor no encontrado");
+                break;
+
+            case 3:
+                break;
+
+            default:
+                System.out.println("Acción no reconocida");
+                break;
         }
     }
 

@@ -61,7 +61,7 @@ volver al menú
 Salir.
 
 ## Limitaciones
--Los datos se pierden al cerrar la aplicación
+- Los datos se pierden al cerrar la aplicación
 - No existe persistencia
 - No se pueden eliminar libros
 - No existe límite configurable del catálogo
