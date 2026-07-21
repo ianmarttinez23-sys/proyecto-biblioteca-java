@@ -50,6 +50,7 @@ public class Main{
                 devolverLibro();    
                 break;
             case 6:
+                mostrarEstadisticas();
                 break;
             case 7:
                 System.out.println("Hasta pronto");
@@ -264,4 +265,20 @@ public class Main{
         }
     }
 
+    public static void mostrarEstadisticas(){
+        int disponibles = 0;
+        int prestados = 0;
+
+        for(String[] libro: libros){
+            if (libro[ESTADO].equalsIgnoreCase("Disponible")) disponibles ++;
+            else prestados ++;
+        }
+        
+        System.out.println(cabecera);
+        System.out.println("Estadísticas:");
+        System.out.println("Total de libros en el catálogo: " + libros.length);
+        System.out.println("Total de libros disponibles: " + disponibles);
+        System.out.println("Total de libros prestados: " + prestados);
+        
+    }
 }
