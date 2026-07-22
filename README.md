@@ -20,9 +20,13 @@ Este proyecto ha sido desarrollado como práctica para consolidar los conocimien
 
 ## Organización del proyecto
 PLAN.md
+
 README.md
+
 RETROSPECTIVA.md
+
 src/
+
 Main.java
 
 ## Cómo ejecutar
