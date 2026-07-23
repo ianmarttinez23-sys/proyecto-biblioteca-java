@@ -5,17 +5,14 @@ public class Main{
     static Scanner entrada = new Scanner(System.in);
     static boolean run = true;
 
-    static String[][] libros = {
-            {"Don Quijote de la Mancha", "Miguel de Cervantes", "Disponible"},
-            {"1984", "George Orwell", "Disponible"},
-            {"Cien años de soledad", "Gabriel García Márquez", "Disponible"},
-            {"El Principito", "Antoine de Saint-Exupéry", "Disponible"},
-            {"La Odisea", "Homero", "Prestado"}
-        };
-    static final int TITULO = 0;
-    static final int AUTOR = 1;
-    static final int ESTADO = 2;
 
+    static Libro[] libros = {
+        new Libro("Don Quijote de la Mancha", "Miguel de Cervantes", true),
+        new Libro("1984", "George Orwell", true),
+        new Libro("Cien años de soledad", "Gabriel García Márquez", true),
+        new Libro("El Principito", "Antoine de Saint-Exupéry", true),
+        new Libro("La Odisea", "Homero", false)
+    };
     public static void main(String[] args){
         while (run) {
             mostrarMenu();
@@ -65,11 +62,13 @@ public class Main{
     }
 
     public static void añadirLibro(){
-        String[][] libroAñadido = new String[libros.length + 1][3];
+        Libro[] libroAñadido = new Libro[libros.length + 1];
         for(int i = 0; i < libros.length; i++){
-            for(int j = 0; j < 3; j++){
-                libroAñadido[i][j] = libros[i][j];
-            }
+            libroAñadido[i] = new Libro(
+                libros[i].getTitulo(),
+                libros[i].getAutor(),
+                libros[i].isEstado()
+            );
         }
 
         System.out.println(cabecera);
@@ -81,9 +80,6 @@ public class Main{
         System.out.println("Escriba el autor del libro que quiera añadir");
         String autor = entrada.nextLine();
 
-        libroAñadido[libros.length][TITULO] = titulo;
-        libroAñadido[libros.length][AUTOR] = autor;
-        
         System.out.println(cabecera);
         System.out.println("¿En que estado está el libro que quiere añadir?");
         System.out.println("1. Disponible");
@@ -94,11 +90,11 @@ public class Main{
 
         switch (opcion) {
             case 1:
-                libroAñadido[libros.length][ESTADO] = "Disponible";
+                libroAñadido[libros.length] = new Libro(titulo, autor, true);
                 break;
 
             case 2:
-                libroAñadido[libros.length][ESTADO] = "Prestado";
+                libroAñadido[libros.length] = new Libro(titulo, autor, false);
                 break;
 
             case 3:
@@ -113,12 +109,12 @@ public class Main{
         libros = libroAñadido;
     }
 
-    public static void mostrarLibros(){
+    public static void mostrarLibros(){ 
         System.out.println(cabecera);
         System.out.println("Libros en el catálogo:");
 
-        for(String[] libro:libros){
-            System.out.println(libro[TITULO]);
+        for(Libro libro:libros){
+            System.out.println(libro.getTitulo());
         }
     }
 
@@ -141,14 +137,14 @@ public class Main{
                 entrada.nextLine();
                 String titulo = entrada.nextLine();
 
-                for(String[] libro:libros){
-                    if(libro[TITULO].equalsIgnoreCase(titulo)){
+                for(Libro libro:libros){
+                    if(libro.getTitulo().equalsIgnoreCase(titulo)){
                         encontrado = true;
 
                         System.out.println(cabecera);
                         System.out.println("Libro encontrado. Detalles de la obra:");
-                        System.out.println("Autor: " + libro[AUTOR]);
-                        System.out.println("Estado: " + libro[ESTADO]);
+                        System.out.println("Autor: " + libro.getAutor());
+                        System.out.println("Estado: " + (libro.isEstado() ? "Disponible" : "Prestado"));
                     }
                 }
 
@@ -166,21 +162,21 @@ public class Main{
 
                 // Puede ser peligroso recorrer tres veces la misma lista ya que puede relentizar el programa
                 // pero no encuentro otra manera.
-                for(String[] libro:libros){
-                    if(libro[AUTOR].equalsIgnoreCase(autor)) encontrado = true;
+                for(Libro libro:libros){
+                    if(libro.getAutor().equalsIgnoreCase(autor)) encontrado = true;
                 }
                 if (encontrado) {
                     System.out.println(cabecera);
                     System.out.println("Libros disponibles:");
-                    for(String[] libro:libros){
-                        if(libro[AUTOR].equalsIgnoreCase(autor) && libro[ESTADO].equalsIgnoreCase("Disponible")){
-                            System.out.println(libro[TITULO]);
+                    for(Libro libro:libros){
+                        if(libro.getAutor().equalsIgnoreCase(autor) && libro.isEstado()){
+                            System.out.println(libro.getTitulo());
                         }
                     }
                     System.out.println("\nLibros prestados:");
-                    for(String[] libro:libros){
-                        if(libro[AUTOR].equalsIgnoreCase(autor) && libro[ESTADO].equalsIgnoreCase("Prestado")){
-                            System.out.println(libro[TITULO]);
+                    for(Libro libro:libros){
+                        if(libro.getAutor().equalsIgnoreCase(autor) && !libro.isEstado()){
+                            System.out.println(libro.getTitulo());
                         }
                     }
                 }
@@ -203,22 +199,22 @@ public class Main{
         entrada.nextLine();
         String titulo = entrada.nextLine();
 
-        for(String[] libro:libros){
-            if (!libro[TITULO].equalsIgnoreCase(titulo)) continue;
-            if(libro[ESTADO].equalsIgnoreCase("Prestado")){
+        for(Libro libro:libros){
+            if (!libro.getTitulo().equalsIgnoreCase(titulo)) continue;
+            if(!libro.isEstado()){
                 System.out.println("Este libro no está disponible");
             }
             else{
                 System.out.println(cabecera);
                 System.out.println("¿Estás seguro que quieres prestar el siguiente libro?");
-                System.out.println(libro[TITULO] + " de " + libro[AUTOR]);
+                System.out.println(libro.getTitulo() + " de " + libro.getAutor());
                 System.out.println("1. Sí");
                 System.out.println("2. No");
 
                 int opcion = entrada.nextInt();
                 switch (opcion) {
                     case 1:
-                        libro[ESTADO] = "Prestado";
+                        libro.setEstado(false);
                         break;
                     case 2:
                         break;
@@ -237,22 +233,22 @@ public class Main{
 
         entrada.nextLine();
         String titulo = entrada.nextLine();
-        for(String[] libro:libros){
-            if (!libro[TITULO].equalsIgnoreCase(titulo)) continue;
-            if(libro[ESTADO].equalsIgnoreCase("Disponible")){
+        for(Libro libro:libros){
+            if (!libro.getTitulo().equalsIgnoreCase(titulo)) continue;
+            if(libro.isEstado()){
                 System.out.println("Este libro no ha sido prestado");
             }
             else{
                 System.out.println(cabecera);
                 System.out.println("¿Estás seguro que quieres devolver el siguiente libro?");
-                System.out.println(libro[TITULO] + " de " + libro[AUTOR]);
+                System.out.println(libro.getTitulo() + " de " + libro.getAutor());
                 System.out.println("1. Sí");
                 System.out.println("2. No");
 
                 int opcion = entrada.nextInt();
                 switch (opcion) {
                     case 1:
-                        libro[ESTADO] = "Disponible";
+                        libro.setEstado(true);
                         break;
                     case 2:
                         break;
@@ -269,8 +265,8 @@ public class Main{
         int disponibles = 0;
         int prestados = 0;
 
-        for(String[] libro: libros){
-            if (libro[ESTADO].equalsIgnoreCase("Disponible")) disponibles ++;
+        for(Libro libro: libros){
+            if (libro.isEstado()) disponibles ++;
             else prestados ++;
         }
         

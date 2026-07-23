@@ -39,4 +39,3 @@ Main.java
 - Eliminar libros del catálogo
 - Sistama de usuarios
 - Interfaz gráfica
-- Programación Orientada a Objetos
